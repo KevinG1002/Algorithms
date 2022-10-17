@@ -95,6 +95,93 @@ class Trie(object):
         )  # Sort in descending order
 
 
+class TreeNode:
+    """Binary Tree Node Structure"""
+
+    def __init__(self, data):
+        self.data = data
+        self.leftChild: TreeNode = None
+        self.rightChild: TreeNode = None
+
+    def PrintSubTree(self):
+        if self.leftChild:
+            self.leftChild.PrintSubTree()
+        print(self.data)
+        if self.rightChild:
+            self.rightChild.PrintSubTree()
+
+    def insert(self, data):
+        if self.data:
+            if data < self.data:
+                if self.leftChild:
+                    self.leftChild.insert(data)
+                else:
+                    self.leftChild = TreeNode(data)
+            elif data > self.data:
+                if self.rightChild:
+                    self.rightChild.insert(data)
+                else:
+                    self.rightChild = TreeNode(data)
+            else:
+                self.data = data
+        else:
+            self.data = data
+
+
+class Tree(object):
+    """Binary Tree Data Structure"""
+
+    def __init__(self):
+        self.root: TreeNode = None
+
+    def PrintTree(self):
+        """
+        Prints tree in ascending order
+        """
+        if self.root.leftChild:
+            self.root.leftChild.PrintSubTree()
+        print(self.root.data)
+        if self.root.rightChild:
+            self.root.rightChild.PrintSubTree()
+
+    def inorderTraversal(self, root: TreeNode):
+        """
+        Prints left subtree, followed by the root, followed by the right subtree.
+        When printing a subtree of the smallest size (that is, a tree with a parent node, a left child and a right child), we
+        print it in the following order: left child, parent, right child.
+        """
+        out = []
+        if root:
+            out = self.inorderTraversal(root.leftChild)
+            out.append(root.data)
+            out = out + self.inorderTraversal(root.rightChild)
+        return out
+
+    def preorderTraversal(self, root: TreeNode):
+        """
+        Prints root, then the left subtree, and then the right subtree.
+        Subtrees printed in following order: Parent, left child, right child
+        """
+        out = []
+        if root:
+            out.append(root.data)
+            out = out + self.preorderTraversal(root.leftChild)
+            out = out + self.preorderTraversal(root.rightChild)
+        return out
+
+    def postorderTraversal(self, root: TreeNode):
+        """
+        Prints the left subtree, the right subtree then the root.
+        Subtrees printed in the following order: Left Child, Right Child, parent.
+        """
+        out = []
+        if root:
+            out = self.postorderTraversal(root.leftChild)
+            out = out + self.postorderTraversal(root.rightChild)
+            out.append(root.data)
+        return out
+
+
 def trie_demo():
     t = Trie()
 
@@ -107,5 +194,21 @@ def trie_demo():
             sys.exit()
 
 
+def tree_demo():
+    t = Tree()
+    t.root = TreeNode(27)
+    t.root.insert(14)
+    t.root.insert(35)
+    t.root.insert(10)
+    t.root.insert(19)
+    t.root.insert(31)
+    t.root.insert(42)
+
+    # t.PrintTree()
+    print(t.inorderTraversal(t.root))
+    print(t.preorderTraversal(t.root))
+    print(t.postorderTraversal(t.root))
+
+
 if __name__ == "__main__":
-    trie_demo()
+    tree_demo()
